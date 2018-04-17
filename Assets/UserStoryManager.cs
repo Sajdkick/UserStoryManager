@@ -159,11 +159,18 @@ public class UserStoryManager {
             }
         }
         saveList.Add("+Tasks: ");
-        foreach(string task in tasks)
+        foreach (string task in tasks)
         {
             saveList.Add(task);
         }
+
+        saveList.Add("+Personas: ");
+        foreach (string persona in personas)
+        {
+            saveList.Add(persona);
+        }
         return saveList;
+
     }
 
 }

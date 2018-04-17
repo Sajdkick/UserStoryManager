@@ -38,12 +38,22 @@ public class LoadUserStoriesHandler : MonoBehaviour {
 
         } while (line[0] != '+');
 
-        while (true)
+        do
+        {
+            line = tr.ReadLine();
+            if (line != null && line[0] != '+')
+            {
+                UserStoryManager.Instance.AddTask(line);
+            }
+
+        } while (line[0] != '+');
+
+        while(true)
         {
             line = tr.ReadLine();
             if (line != null)
             {
-                UserStoryManager.Instance.AddTask(line);
+                UserStoryManager.Instance.AddPersona(line);
             }
             else break;
         }
