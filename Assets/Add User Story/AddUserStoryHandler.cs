@@ -7,17 +7,42 @@ public class AddUserStoryHandler : MonoBehaviour {
 
     public InputField inputField;
     public ListManager listManager;
+    public Dropdown personaDropDown;
+    public InputField newPersonaInputField;
+
+    void OnEnable()
+    {
+        UpdatePersonaDropDown();
+    }
 
     public void OnInputFieldChange()
     {
-        listManager.PopulateList(UserStoryManager.Instance.GetSimilarUserStories(inputField.text, 0.5f));
+        listManager.PopulateList(UserStoryManager.Instance.GetSimilarUserStories(GetUserStory(), 0.5f));
     }
+
+    public void OnNewPersonaInputFieldChange()
+    {
+        personaDropDown.interactable = newPersonaInputField.text == "";
+        listManager.PopulateList(UserStoryManager.Instance.GetSimilarUserStories(GetUserStory(), 0.5f));
+    }
+
+    public void OnDropDownSelect()
+    {
+        listManager.PopulateList(UserStoryManager.Instance.GetSimilarUserStories(GetUserStory(), 0.5f));
+    }
+
     public void AddUserStory()
     {
         if(inputField.text != "")
         {
-            UserStoryManager.Instance.AddUserStory(inputField.text);
+            UserStoryManager.Instance.AddUserStory(GetUserStory());
             inputField.text = "";
+            if(newPersonaInputField.text != "")
+            {
+                UserStoryManager.Instance.AddPersona(newPersonaInputField.text.ToLower());
+                newPersonaInputField.text = "";
+                UpdatePersonaDropDown();
+            }
         }
     }
     public void Back()
@@ -25,13 +50,20 @@ public class AddUserStoryHandler : MonoBehaviour {
         GUIManager.Instance().LoadCanvas("Main Menu");
     }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    string GetUserStory()
+    {
+        string persona = personaDropDown.captionText.text;
+        if (newPersonaInputField.text != "")
+            persona = newPersonaInputField.text;
+
+
+        return "As a " + persona.ToLower() + " i want " + inputField.text.ToLower();
+    }
+
+    void UpdatePersonaDropDown()
+    {
+        personaDropDown.ClearOptions();
+        personaDropDown.AddOptions(new List<string>(UserStoryManager.Instance.GetPersonas()));
+    }
+
 }

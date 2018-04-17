@@ -31,11 +31,13 @@ public class UserStoryManager {
 
     List<UserStory> userStories;
     List<string> tasks;
+    List<string> personas;
 
 	// Use this for initialization
 	UserStoryManager () {
         userStories = new List<UserStory>();
         tasks = new List<string>();
+        personas = new List<string>();
 	}
 
     public void AddUserStory(string userStory)
@@ -54,6 +56,11 @@ public class UserStoryManager {
             if (targetUserStory == userStory.userStory)
                 userStory.tasks.Add(task);
         }
+    }
+    public void AddPersona(string persona)
+    {
+        if(!personas.Contains(persona))
+            personas.Add(persona);
     }
     public void AddTaskToUserStory(string targetUserStory, string task)
     {
@@ -118,6 +125,10 @@ public class UserStoryManager {
     public string[] GetTasks()
     {
         return tasks.ToArray();
+    }
+    public string[] GetPersonas()
+    {
+        return personas.ToArray();
     }
     public List<string> GetSpecificTasks(string targetUserStory)
     {
